@@ -1,6 +1,11 @@
+image:
+    file: .gitpod.Dockerfile
+
 tasks:
-  - before: |
-      cargo install --git 'https://github.com/nanikamado/cotton.git' --features language-server
+  - command: |
+      code helloworld.cot
+      echo try:
+      echo cotton helloworld.cot
 vscode:
   extensions:
     - nanikamado.cotton-language-server
