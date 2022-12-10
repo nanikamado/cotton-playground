@@ -1,0 +1,32 @@
+(.) : a -> (a -> b) -> b forall {a, b} =
+    | a, f => f(a)
+
+infixl 10 .
+
+data Next(A) forall { A }
+data End(A) forall { A }
+
+loop : a -> (a -> Next[a] | End[b]) -> b forall {a, b} =
+    | init, f => init.f.
+        | Next(a) => a.loop(f)
+        | End(a) => a
+
+data A /\ B forall { A, B }
+
+infixl 3 /\
+
+fizzbuzz : I64 -> String =
+    | n => (n % 3 /\ n % 5).
+        | 0 /\ 0 => "FizzBuzz"
+        | 0 /\ _ => "Fizz"
+        | _ /\ 0 => "Buzz"
+        | _ /\ _ => n.i64_to_string
+
+main : () -> () =
+    | () =>
+        1.loop(
+            | 101 => End(())
+            | i => do
+                i.fizzbuzz.println
+                Next(i + 1)
+        )

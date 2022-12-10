@@ -1,0 +1,60 @@
+(.) =
+    | a, f => f(a)
+
+infixl 10 .
+
+data A /\ B forall { A, B }
+
+infixl 3 /\
+
+data E
+data T(C, N, T1, T2) forall { C, N, T1, T2 }
+
+data R
+data B
+
+type Color = R | B
+
+type RBTree = E | T[Color, A, RBTree[A], RBTree[A]] forall { A }
+type NonEmptyRBTree = T[Color, A, RBTree[A], RBTree[A]] forall { A }
+
+type Bool = True | False
+
+insert : RBTree[I64] -> I64 -> NonEmptyRBTree[I64] =
+    | t, x => t.insert_rec(x).
+        | T(_, x, a, b) => T(B, x, a, b)
+
+insert_rec : RBTree[I64] -> I64 -> NonEmptyRBTree[I64] =
+    | E, x => T(R, x, E, E)
+    | T(color, y, a, b), x => (x < y /\ y < x).
+        | True /\ _ => T(color, y, a.insert_rec(x), b).balance
+        | _ /\ True => T(color, y, a, b.insert_rec(x)).balance
+        | _ => T(B, y, a, b)
+
+balance : NonEmptyRBTree[I64] -> NonEmptyRBTree[I64] =
+    | T(B, u, T(R, v, T(R, w, t1, t2), t3), t4) =>
+        T(R, v, T(B, w, t1, t2), T(B, u, t3, t4))
+    | T(B, u, T(R, v, t1, T(R, w, t2, t3)), t4) =>
+        T(R, w, T(B, v, t1, t2), T(B, u, t3, t4))
+    | T(B, u, t1, T(R, v, T(R, w, t2, t3), t4)) =>
+        T(R, w, T(B, u, t1, t2), T(B, v, t3, t4))
+    | T(B, u, t1, T(R, v, t2, T(R, w, t3, t4))) =>
+        T(R, v, T(B, u, t1, t2), T(B, w, t3, t4))
+    | t => t
+
+contains : RBTree[I64] -> I64 -> Bool =
+    | E, _ => False
+    | T(_, y, a, b), x => (x < y /\ y < x).
+        | True /\ _ => a.contains(x)
+        | _ /\ True => b.contains(x)
+        | _ => True
+
+main =
+    | () => do
+        test0 = E.contains(0)
+        test1 = E.insert(2).insert(4).insert(0).insert(0).insert(100).contains(0)
+        test2 = E.insert(2).insert(4).insert(0).insert(0).insert(100).contains(3)
+        (test0 /\ test1 /\ test2).
+            | False /\ True /\ False => "ok"
+            | _ => "ng"
+        .println

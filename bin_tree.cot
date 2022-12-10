@@ -1,0 +1,40 @@
+(.) =
+    | a, f => f(a)
+
+infixl 10 .
+
+infixl 5 >
+
+data A /\ B forall { A, B }
+
+infixl 3 /\
+
+data E
+data T(A, B, C) forall { A, B, C }
+
+type Tree = E | T[A, Tree[A], Tree[A]] forall { A }
+type Bool = True | False
+
+insert : Tree[I64] -> I64 -> Tree[I64] =
+    | E, x => T(x, E, E)
+    | T(y, a, b), x => (x < y /\ y < x).
+        | True /\ _ => T(y, a.insert(x), b)
+        | _ /\ True => T(y, a, b.insert(x))
+        | _ => T(y, a, b)
+
+contains : Tree[I64] -> I64 -> Bool =
+    | E, _ => False
+    | T(y, a, b), x => (x < y /\ y < x).
+        | True /\ _ => a.contains(x)
+        | _ /\ True => b.contains(x)
+        | _ => True
+
+main =
+    | () => do
+        test0 = E.contains(0)
+        test1 = E.insert(2).insert(4).insert(0).insert(0).insert(100).contains(0)
+        test2 = E.insert(2).insert(4).insert(0).insert(0).insert(100).contains(3)
+        (test0 /\ test1 /\ test2).
+            | False /\ True /\ False => "ok"
+            | _ => "ng"
+        .println

@@ -1,0 +1,54 @@
+(.) : A -> (A -> B) -> B forall {A, B} =
+    | a, f => f(a)
+
+infixl 10 .
+
+($) : (a -> b) -> a -> b forall {a, b} =
+    | f, a => f(a)
+
+infixr 0 $
+
+data A /\ B forall { A, B }
+
+infixl 3 /\
+
+data A .. B forall { A, B }
+
+infixl 4 ..
+
+pop =
+    | a .. b => (a < b).
+        | True => (a + 1)..b /\ a
+        | False => ()
+    | Filter(l, f) => l.pop.
+        | () => ()
+        | l2 /\ a => a.f.
+            | True => Filter(l2, f) /\ a
+            | False => Filter(l2, f).pop
+
+all =
+    | i, f => i.pop.
+        | () => True
+        | i2 /\ a => a.f.
+            | True => i2.all(f)
+            | False => False
+
+is_prime =
+    | n => (2..n - 1).all $
+        | i => n % i != 0
+
+each =
+    | l, f => l.pop.
+        | () => ()
+        | l2 /\ a => do
+            a.f
+            l2.each(f)
+
+data Filter(A, B) forall { A, B }
+
+filter = | l, f => Filter(l, f)
+
+print_i64 = | n => n.i64_to_string.println
+
+main : () -> ()
+= | () => (2..100).filter(is_prime).each(print_i64)

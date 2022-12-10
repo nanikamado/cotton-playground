@@ -1,0 +1,6 @@
+tasks:
+  - before: |
+      cargo install --git 'https://github.com/nanikamado/cotton.git' --features language-server
+vscode:
+  extensions:
+    - nanikamado.cotton-language-server
