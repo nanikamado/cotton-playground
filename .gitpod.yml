@@ -3,10 +3,10 @@ image:
 
 tasks:
   - command: |
-      code helloworld.cot
+      code examples/helloworld.cot
       clear
       echo try:
-      echo '  $ cotton helloworld.cot'
+      echo '  $ cotton examples/helloworld.cot'
 vscode:
   extensions:
     - nanikamado.cotton-language-server
