@@ -6,7 +6,7 @@ tasks:
       code helloworld.cot
       clear
       echo try:
-      echo cotton helloworld.cot
+      echo '  $ cotton helloworld.cot'
 vscode:
   extensions:
     - nanikamado.cotton-language-server
