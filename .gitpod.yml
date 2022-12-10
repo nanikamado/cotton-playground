@@ -4,6 +4,7 @@ image:
 tasks:
   - command: |
       code helloworld.cot
+      clear
       echo try:
       echo cotton helloworld.cot
 vscode:
