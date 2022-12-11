@@ -1,3 +1,3 @@
 FROM gitpod/workspace-full
 
-RUN cargo install --git 'https://github.com/nanikamado/cotton.git' --rev 25bd653 --features language-server
+RUN cargo install --git 'https://github.com/nanikamado/cotton.git' --rev db934f7 --features language-server
