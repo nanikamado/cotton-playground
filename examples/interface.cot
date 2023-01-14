@@ -1,7 +1,3 @@
-(.) = | a, f => f(a)
-
-infixl 10 .
-
 data Hoge
 
 greet : Hoge -> String =
@@ -12,12 +8,13 @@ data Fuga
 greet : Fuga -> String =
     | _ => "Fugaaaaaa"
 
-interface Greet where
+interface Greet {
     greet : Self -> String
+}
 
 greet_twice : A -> String forall { A : Greet } =
     | a => do 
-        a.greet <> a.greet
+        a.greet ++ a.greet
 
 main : () -> () =
     | () => do

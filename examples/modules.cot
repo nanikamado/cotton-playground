@@ -1,0 +1,16 @@
+mod aaa {
+    pub data D1
+
+    pub mod bbb {
+        use super::D1
+        pub to_string : D1 -> String = | _ => ::double("D1")
+    }
+}
+
+use aaa::bbb::to_string
+
+double : String -> String =
+    | a => a ++ a
+
+main : () -> () =
+    | () => aaa::D1.to_string.println_str

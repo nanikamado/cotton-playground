@@ -1,32 +1,26 @@
-(.) =
-    | a, f => f(a)
-
-infixl 10 .
-
-infixl 5 >
-
-data A /\ B forall { A, B }
-
-infixl 3 /\
-
 data E
-data T(A, B, C) forall { A, B, C }
+data T {
+    value: A,
+    left: B,
+    right: C
+} forall { A, B, C }
 
 type Tree = E | T[A, Tree[A], Tree[A]] forall { A }
-type Bool = True | False
+
+identity = | a => a
 
 insert : Tree[I64] -> I64 -> Tree[I64] =
-    | E, x => T(x, E, E)
-    | T(y, a, b), x => (x < y /\ y < x).
-        | True /\ _ => T(y, a.insert(x), b)
-        | _ /\ True => T(y, a, b.insert(x))
-        | _ => T(y, a, b)
+    | E, x => T { value: x, left: E, right: E }
+    | T { value: v, left: l, right: r, identity: t }, x => (x < v /\ v < x).
+        | True /\ _ => T { value: v, left: l.insert(x), right: r }
+        | _ /\ True => T { value: v, left: l, right: r.insert(x) }
+        | _ => t
 
 contains : Tree[I64] -> I64 -> Bool =
     | E, _ => False
-    | T(y, a, b), x => (x < y /\ y < x).
-        | True /\ _ => a.contains(x)
-        | _ /\ True => b.contains(x)
+    | T { value: v, left: l, right: r }, x => (x < v /\ v < x).
+        | True /\ _ => l.contains(x)
+        | _ /\ True => r.contains(x)
         | _ => True
 
 main =

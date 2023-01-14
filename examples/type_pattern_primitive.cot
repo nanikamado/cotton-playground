@@ -1,11 +1,6 @@
-(.) : a -> (a -> b) -> b forall {a, b} =
-    | a, f => f(a)
-
-infixl 10 .
-
 add_one : (I64 | String) -> (I64 | String) =
     | a : I64 => a + 1
-    | a : String => a <> " one"
+    | a : String => a ++ " one"
 
 to_string : (I64 | String) -> String =
     | a : I64 => a.i64_to_string
@@ -13,6 +8,6 @@ to_string : (I64 | String) -> String =
 
 main : () -> () =
     | () => do
-        1.add_one.to_string.println
-        "1".add_one.to_string.println
+        1.add_one.to_string.println_str
+        "1".add_one.to_string.println_str
         ()
