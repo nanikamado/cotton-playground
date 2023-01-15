@@ -5,8 +5,15 @@ tasks:
   - command: |
       code examples/helloworld.cot
       clear
-      echo try:
-      echo '  $ cotton examples/helloworld.cot'
+      echo 'try:'
+      ruby -e "
+      col = `tput cols`.to_i-2
+      puts '╭' + '─' * col + '╮'
+      '$ cotton examples/helloworld.cot'.split(\"\n\").each do |a|
+          puts '│ ' + a + ' ' * (col - a.length - 1) + '│'
+      end
+      puts '╰' + '─' * col + '╯'
+      "
 vscode:
   extensions:
     - nanikamado.cotton-language-server
