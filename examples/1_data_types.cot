@@ -1,0 +1,14 @@
+data Dog {
+    name: String,
+    size: I64,
+}
+
+p = Dog { name: "pochi", size: 6 }
+
+main = | () => println(name(p))
+
+// data StringPair(String, String)
+
+// p = StringPair("a", "b")
+
+// main = | () => p._0.println

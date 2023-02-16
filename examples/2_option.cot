@@ -1,0 +1,14 @@
+data Some(A) forall { A }
+
+data None
+
+// div_safe =
+//     | _, 0 => None
+//     | a, b => (a / b).Some
+
+// main : () -> () =
+//     | () => 6.div_safe(2).
+//         | None => "error".println
+//         | Some(a) => a.println
+
+// type Option = | A => Some[A] | None
